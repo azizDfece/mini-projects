@@ -32,7 +32,22 @@ range.addEventListener('input', (e) => {
 
 
 
+function shuffleString(str) {
+    let array = str.split('') //تفكك النص الى مصفوفة 
+    let currentIndex = array.length // تستخرج الاندكس الحالي 
+    let randomIndex // تسوي متغير لاندكس العشوائي 
 
+    while (currentIndex !== 0) { // تسوي لوب شرط الاندكس لا يساوي 0 
+        // تستخرج رقم عشوائي بعدد الاندكس الحالي
+        randomIndex = Math.floor(Math.random() * currentIndex)
+        currentIndex-- // تنقص الاندكس 
+
+        // تبدل القيم الاندكس الحالي بالعشوائي والعشوائي بالحالي 
+        [array[currentIndex], array[randomIndex]] = [array[randomIndex], array[currentIndex]]
+
+    }
+    return array.join('') // تحول المصفوفة الى نص بستخدم جوين 
+}
 
 function generatePassword() {
     document.querySelector(".showPassword").textContent = ' '
@@ -88,13 +103,14 @@ function generatePassword() {
     if (includeNumber) {
         availableChar += numberChars
     }
+    console.log(availableChar);
 
-
-
+    let shuffledAvailableChar = shuffleString(availableChar)
+    console.log(shuffledAvailableChar)
     for (let i = 0; i < passwordLength; i++) {
         let randowIndex = Math.floor(Math.random() * availableChar.length - 1)
 
-        password += availableChar.charAt(randowIndex)
+        password += shuffledAvailableChar.charAt(randowIndex)
 
 
 
