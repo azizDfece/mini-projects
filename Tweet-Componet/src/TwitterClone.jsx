@@ -43,6 +43,56 @@ export function Tweet() {
             return updatetweet
         })
     }
+    function handleDate(date) {
+
+        let date1 = new Date(date)
+        let hours = date1.getHours()
+        let minutes = date1.getMinutes()
+        let seconds = date1.getSeconds()
+        let months = date1.getMonth()
+        let year = date1.getFullYear()
+        let date2 = `${year}/${months + 1}  ${hours % 12 || 12}:${seconds}`
+
+        const now = new Date()
+        const past = new Date(date).getTime()
+        const diffinMilliseconds = now - past
+
+        //الثوابت 
+        const Minutes = 60 * 1000
+        const Hours = 60 * Minutes
+        const Day = 24 * Hours
+        const Week = 7 * Day
+        console.log(diffinMilliseconds);
+
+
+        if (diffinMilliseconds < Hours) {
+            const min = Math.round(diffinMilliseconds / Minutes)
+            if (min < 1) return "now"
+            return `منذوا ${min} دقية`
+        }
+        if (diffinMilliseconds < Day) {
+            const h = Math.round(diffinMilliseconds / Hours)
+            return `امنذوا ${h} ساعة`
+        }
+        if (diffinMilliseconds < 2 * Day) {
+            const d = Math.round(diffinMilliseconds / Day)
+            return `امس  `
+        }
+        if (diffinMilliseconds < 2 * Week && diffinMilliseconds > Week) {
+            const w = Math.round(diffinMilliseconds / Week)
+            return "قبل اسبوع"
+        }
+
+
+        return date1.toLocaleDateString('ar-EG', {
+            day: 'numeric',
+            month: 'short',
+            year: 'numeric'
+        })
+        //new Date(tweet.id).toLocaleString()
+
+
+    }
     useEffect(() => {
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(tweetList))
     }, [tweetList])
@@ -59,7 +109,7 @@ export function Tweet() {
                             <div key={tweet.id} className="tweetItem">
                                 <p className="tweetText">{tweet.tweet}</p>
                                 <div className="option">
-                                    <span className="timestamp">{new Date(tweet.id).toLocaleString()}</span>
+                                    <span className="timestamp">{handleDate(tweet.id)}</span>
                                     <span className="delete" onClick={() => {
                                         deleteTweet(tweet.id)
                                     }}>حذف</span>
